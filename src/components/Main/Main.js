@@ -1,16 +1,15 @@
-import React from 'react';
+import { useEffect, useState } from 'react';
 import api from '../../utils/api';
 import Card from '../Card/Card';
 
-
 function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick }) {
 
-    const [userAvatar, setUserAvatar] = React.useState('#');
-    const [userName, setUserName] = React.useState('Имя');
-    const [userDescription, setUserDescription] = React.useState('Активность');
-    const [cards, setCards] = React.useState([]);
+    const [userAvatar, setUserAvatar] = useState('#');
+    const [userName, setUserName] = useState('Имя');
+    const [userDescription, setUserDescription] = useState('Активность');
+    const [cards, setCards] = useState([]);
 
-    React.useEffect(() => {
+    useEffect(() => {
         Promise.all([api.getUserProfile(), api.getInitialCards()])
             .then(([userData, cardsData]) => {
                 setUserAvatar(userData.avatar);
@@ -21,9 +20,7 @@ function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick }) {
             .catch(err => {
                 console.log(err);
             });
-    }, [ ] );
-
-
+    }, []);
 
     return (
         <main>
@@ -48,7 +45,8 @@ function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick }) {
 
                     {cards.map((card) => {
                         return (
-                            <Card name={card.name} link={card.link} likes={card.likes.length} id={card._id} onCardClick={onCardClick} />
+                            <Card name={card.name} link={card.link} likes={card.likes.length} id={card._id}
+                                onCardClick={onCardClick} />
                         );
                     })}
 

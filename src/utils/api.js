@@ -4,7 +4,6 @@ class Api {
     this._headers = options.headers;
   }
 
-
   _checkResponse(res) {
     if (res.ok) {
       return res.json();
@@ -13,11 +12,9 @@ class Api {
     };
   }
 
-
   _request(url, options) {
     return fetch(url, options).then(this._checkResponse);
   }
-
 
   getInitialCards() {
     return this._request(this._baseUrl + 'cards', {
@@ -25,7 +22,6 @@ class Api {
       headers: this._headers,
     });
   }
-
 
   addCard(bodyObj) {
     return this._request(this._baseUrl + 'cards', {
@@ -35,7 +31,6 @@ class Api {
     });
   }
 
-
   deleteCard(endUrl) {
     return this._request(this._baseUrl + endUrl, {
       method: 'DELETE',
@@ -43,14 +38,12 @@ class Api {
     });
   }
 
-
   getUserProfile() {
     return this._request(this._baseUrl + 'users/me', {
       method: 'GET',
       headers: this._headers,
     });
   }
-
 
   editUserProfile(bodyObj) {
     return this._request(this._baseUrl + 'users/me', {
@@ -60,7 +53,6 @@ class Api {
     });
   }
 
-
   editUserAvatar(bodyObj) {
     return this._request(this._baseUrl + 'users/me/avatar', {
       method: 'PATCH',
@@ -69,7 +61,6 @@ class Api {
     });
   }
 
-
   addLikeCard(endUrl) {
     return this._request(this._baseUrl + endUrl, {
       method: 'PUT',
@@ -77,15 +68,12 @@ class Api {
     });
   }
 
-
   deleteLikeCard(endUrl) {
     return this._request(this._baseUrl + endUrl, {
       method: 'DELETE',
       headers: this._headers,
     });
   }
-
-
 }
 
 const api = new Api({
