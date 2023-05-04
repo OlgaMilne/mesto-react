@@ -32,7 +32,7 @@ class Api {
   }
 
   deleteCard(endUrl) {
-    return this._request(this._baseUrl + endUrl, {
+    return this._request(this._baseUrl + 'cards/' + endUrl, {
       method: 'DELETE',
       headers: this._headers,
     });
@@ -61,19 +61,20 @@ class Api {
     });
   }
 
-  addLikeCard(endUrl) {
-    return this._request(this._baseUrl + endUrl, {
-      method: 'PUT',
-      headers: this._headers,
-    });
+  changeLikeCardStatus(cardId, hasUserLike) {
+    if (hasUserLike) {
+      return this._request(this._baseUrl + 'cards/' + cardId + '/likes', {
+        method: 'DELETE',
+        headers: this._headers,
+      });
+    } else {
+      return this._request(this._baseUrl + 'cards/' + cardId + '/likes', {
+        method: 'PUT',
+        headers: this._headers,
+      });
+    }
   }
 
-  deleteLikeCard(endUrl) {
-    return this._request(this._baseUrl + endUrl, {
-      method: 'DELETE',
-      headers: this._headers,
-    });
-  }
 }
 
 const api = new Api({

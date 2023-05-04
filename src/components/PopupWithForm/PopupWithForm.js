@@ -1,16 +1,35 @@
-import React from 'react';
+import { useEffect } from 'react';
 
-function PopupWithForm({ isOpen, onClose, popupName, formTitle, formName, textSubmit, children }) {
+function PopupWithForm({ isOpen, onClose, onSubmit, isValid, popupName, formTitle, formName, textSubmit, children }) {
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const closeByEscape = (e) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    }
+    document.addEventListener('keydown', closeByEscape);
+    return () => document.removeEventListener('keydown', closeByEscape)
+  }, [isOpen, onClose])
+
+  function handleOverlay(e) {
+    if (e.target === e.currentTarget) {
+      onClose();
+    }
+  }
 
   return (
-    <section className={`popup  popup_for_${popupName} ${isOpen ? 'popup_opened' : ''}`}>
+    <section className={`popup  popup_for_${popupName} ${isOpen ? 'popup_opened' : ''}`}
+      onMouseDown={handleOverlay}  >
       <div className="popup__container">
         <h3 className="popup__heading ">
           {formTitle}
         </h3>
-        <form className={`form form_name_${formName}`} name={formName} noValidate>
+        <form className={`form form_name_${formName}`} name={formName} onSubmit={onSubmit} noValidate>
           {children}
-          <button className="form__button" type="submit">
+          <button className={`form__button ${isValid ? "" : "form__button_inactive"}`} type="submit" disabled={isValid ? false : true} >
             {textSubmit || 'Сохранить'}
           </button>
         </form>
