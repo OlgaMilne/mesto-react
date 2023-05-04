@@ -12,10 +12,10 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
   const [errorDescription, setErrorDescription] = useState('');
   const [validationState, setValidationState] = useState({});
   const [isValid, setIsValid] = useState(true);
-  const [textSubmit, setTextSubmit] = useState();
+  const [textSubmit, setTextSubmit] = useState('');
 
   useEffect(() => {
-    setTimeout(() => setTextSubmit(), 1000);
+    setTimeout(() => setTextSubmit(''), 1000);
   }, [isOpen]);
 
   useEffect(() => {

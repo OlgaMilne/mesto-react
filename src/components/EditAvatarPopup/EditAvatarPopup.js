@@ -14,7 +14,7 @@ function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
     const [textSubmit, setTextSubmit] = useState('');
 
     useEffect(() => {
-        setTimeout(() => setTextSubmit(), 1000);
+        setTimeout(() => setTextSubmit(''), 1000);
     }, [isOpen]);
 
     useEffect(() => {
