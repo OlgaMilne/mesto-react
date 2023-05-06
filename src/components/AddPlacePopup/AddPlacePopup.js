@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import PopupWithForm from '../PopupWithForm/PopupWithForm';
 
-function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
+function AddPlacePopup({ isOpen, onClose, onAddPlace, isLoading }) {
 
     const [name, setName] = useState('');
     const [link, setLink] = useState('');
@@ -9,11 +9,7 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
     const [errorLink, setErrorLink] = useState('');
     const [validationState, setValidationState] = useState({});
     const [isValid, setIsValid] = useState(true);
-    const [textSubmit, setTextSubmit] = useState('Создать');
-
-    useEffect(() => {
-        setTimeout(() => setTextSubmit('Создать'), 1000);
-      }, [isOpen]);
+    const textSubmit = isLoading ? 'Создание...' : 'Создать';
 
     useEffect(() => {
         setName('');
@@ -50,7 +46,6 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
 
     function handleSubmit(e) {
         e.preventDefault();
-        setTextSubmit('Создание...');
         onAddPlace({
             "name": name,
             "link": link,

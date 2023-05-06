@@ -12,7 +12,7 @@ function PopupWithForm({ isOpen, onClose, onSubmit, isValid, popupName, formTitl
     }
     document.addEventListener('keydown', closeByEscape);
     return () => document.removeEventListener('keydown', closeByEscape)
-  }, [isOpen, onClose])
+  }, [isOpen])
 
   function handleOverlay(e) {
     if (e.target === e.currentTarget) {
@@ -29,7 +29,7 @@ function PopupWithForm({ isOpen, onClose, onSubmit, isValid, popupName, formTitl
         </h3>
         <form className={`form form_name_${formName}`} name={formName} onSubmit={onSubmit} noValidate>
           {children}
-          <button className={`form__button ${isValid ? "" : "form__button_inactive"}`} type="submit" disabled={isValid ? false : true} >
+          <button className={`form__button ${isValid ? "" : "form__button_inactive"}`} type="submit" disabled={!isValid} >
             {textSubmit || 'Сохранить'}
           </button>
         </form>

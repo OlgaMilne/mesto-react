@@ -2,7 +2,7 @@ import { useEffect, useState, useContext } from 'react';
 import PopupWithForm from '../PopupWithForm/PopupWithForm';
 import CurrentUserContext from '../../contexts/CurrentUserContext';
 
-function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
+function EditProfilePopup({ isOpen, onClose, onUpdateUser, isLoading  }) {
 
   const currentUser = useContext(CurrentUserContext);
 
@@ -12,11 +12,7 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
   const [errorDescription, setErrorDescription] = useState('');
   const [validationState, setValidationState] = useState({});
   const [isValid, setIsValid] = useState(true);
-  const [textSubmit, setTextSubmit] = useState('');
-
-  useEffect(() => {
-    setTimeout(() => setTextSubmit(''), 1000);
-  }, [isOpen]);
+  const textSubmit = isLoading ? 'Сохранение...' : 'Сохранить';
 
   useEffect(() => {
     setName(currentUser.name);
@@ -53,8 +49,7 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
 
   function handleSubmit(e) {
     e.preventDefault();
-    setTextSubmit('Сохранение...');
-    onUpdateUser({
+      onUpdateUser({
       name,
       "about": description,
     });

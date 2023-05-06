@@ -15,11 +15,13 @@ function App() {
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
+  const [isImagePopupOpen, setIsImagePopupOpen] = useState(false);
   const [isDeleteCardPopupOpen, setIsDeleteCardPopupOpen] = useState(false);
-  const [selectedCard, setSelectedCard] = useState({ name: '', link: '#', isSelected: false });
+  const [selectedCard, setSelectedCard] = useState({ name: '', link: '#' });
   const [deletedCardId, setDeletedCardId] = useState('');
-  const [currentUser, setCurrentUser] = useState([]);
+  const [currentUser, setCurrentUser] = useState({});
   const [cards, setCards] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     api.getInitialCards()
@@ -57,6 +59,7 @@ function App() {
   };
 
   function handleAddPlace(dataCard) {
+    setIsLoading(true);
     api.addCard(dataCard)
       .then(newCard => {
         setCards([newCard, ...cards]);
@@ -68,6 +71,7 @@ function App() {
   }
 
   function handleUpdateAvatar(avatar) {
+    setIsLoading(true);
     api.editUserAvatar(avatar)
       .then(userData => {
         setCurrentUser(userData);
@@ -79,6 +83,7 @@ function App() {
   }
 
   function handleUpdateUser(user) {
+    setIsLoading(true);
     api.editUserProfile(user)
       .then(userData => {
         setCurrentUser(userData);
@@ -90,6 +95,7 @@ function App() {
   }
 
   function handleDeleteCard() {
+    setIsLoading(true);
     api.deleteCard(deletedCardId)
       .then(() => {
         const updatedCards = cards.filter((item) => item._id !== deletedCardId);
@@ -102,7 +108,8 @@ function App() {
   };
 
   function handleCardClick(name, link) {
-    setSelectedCard({ name: name, link: link, isSelected: true });
+    setSelectedCard({ name: name, link: link, });
+    setIsImagePopupOpen(true);
   }
 
   function handleCardLike(card) {
@@ -121,7 +128,8 @@ function App() {
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
     setIsDeleteCardPopupOpen(false);
-    setSelectedCard({ name: '', link: '#', isSelected: false });
+    setIsImagePopupOpen(false);
+    setTimeout(() => setIsLoading(false), 1000);
   }
 
   return (
@@ -130,15 +138,15 @@ function App() {
       <Main cards={cards} onEditProfile={handleEditProfileClick} onAddPlace={handleAddPlaceClick} onEditAvatar={handleEditAvatarClick}
         onCardClick={handleCardClick} onCardTrashClick={handleCardTrashClick} onCardLike={handleCardLike} />
 
-      <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar} />
+      <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} isLoading={isLoading} onUpdateAvatar={handleUpdateAvatar} />
 
-      <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} />
+      <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} isLoading={isLoading} onUpdateUser={handleUpdateUser} />
 
-      <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddPlace={handleAddPlace} />
+      <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} isLoading={isLoading} onAddPlace={handleAddPlace} />
 
-      <ConfirmationPopup isOpen={isDeleteCardPopupOpen} onClose={closeAllPopups} onConfirm={handleDeleteCard} />
+      <ConfirmationPopup isOpen={isDeleteCardPopupOpen} onClose={closeAllPopups} isLoading={isLoading} onConfirm={handleDeleteCard} />
 
-      <ImagePopup card={selectedCard} onClose={closeAllPopups} />
+      <ImagePopup isOpen={isImagePopupOpen} onClose={closeAllPopups} card={selectedCard} />
 
       <Footer />
     </CurrentUserContext.Provider>

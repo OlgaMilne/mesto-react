@@ -1,17 +1,12 @@
-import { useEffect, useState } from 'react';
+import React from 'react';
 import PopupWithForm from '../PopupWithForm/PopupWithForm';
 
-function ConfirmationPopup({ isOpen, onClose, onConfirm }) {
+function ConfirmationPopup({ isOpen, onClose, onConfirm, isLoading }) {
 
-    const [textSubmit, setTextSubmit] = useState('Да');
-
-    useEffect(() => {
-        setTimeout(() => setTextSubmit('Да'), 1000);
-    }, [isOpen]);
+    const textSubmit = isLoading ? 'Удаление...' : 'Да';
 
     function handleSubmit(e) {
         e.preventDefault();
-        setTextSubmit('Удаление...');
         onConfirm();
     }
 
